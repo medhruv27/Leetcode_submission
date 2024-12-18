@@ -4,17 +4,15 @@ public:
     vector<int> rank, parent, size;
     DisjointSet(int n){
         rank.resize(n + 1, 0);
-        size.resize(n + 1);
+        size.resize(n + 1, 1);
         parent.resize(n + 1);
         for (int i = 0; i <= n; i++){
             parent[i] = i;
-            size[i] = 1;
         }
     }
     int findPar(int node){
-        if (node == parent[node])
-            return node;
-        return parent[node] = findPar(parent[node]); // path compression.
+        if (node == parent[node]) return node;
+        return  findPar(parent[node]); // path compression.
     }
     void unionByRank(int u, int v){
         int ulp_u = findPar(u);
