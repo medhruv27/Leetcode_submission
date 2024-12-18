@@ -9,8 +9,8 @@ public:
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
                 if(mat[i][j]==0){
-                    vis[i][j] =1;
                     q.push({{i,j},0});
+                    vis[i][j] =1;
                 }
             }
         }
@@ -21,13 +21,13 @@ public:
             int c = q.front().first.second;
             int steps = q.front().second;
             q.pop();
-            dis[r][c] =steps;
+            dis[r][c] = steps;
             for(int i=0;i<4;i++){
                 int rn = r + drow[i];
                 int cn = c + dcol[i];
-                if(rn>=0 && rn<n && cn>=0 && cn<m && vis[rn][cn]!=1){
-                    vis[rn][cn] = 1;
+                if(rn>=0 && rn<n && cn>=0 && cn< m && vis[rn][cn]!=1){
                     q.push({{rn,cn},steps+1});
+                    vis[rn][cn] =1;
                 }
             }
         }
