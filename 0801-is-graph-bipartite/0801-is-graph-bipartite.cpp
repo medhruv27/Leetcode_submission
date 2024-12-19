@@ -1,28 +1,32 @@
 class Solution {
 public:
-    bool dfs(int node,int col,vector<int>&color,vector<vector<int>>graph){
-        color[node] = col;
-        for(auto it : graph[node]){
-            if(color[it]==-1){
-                        if(dfs(it,!col,color,graph)==false){
-                        return false;
-                    }
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n = graph.size();
+        vector<int> colors(n, -1);  // Initialize all colors to -1
+        for (int i = 0; i < n; i++) {
+            if (colors[i] == -1) {  // If not visited
+                if (!bfs(i, graph, colors)) {
+                    return false;
+                }
             }
-            else if(color[it]==col){
-                return false;
-            }
-
         }
         return true;
     }
-    bool isBipartite(vector<vector<int>>& graph) {
-        int v = graph.size();
-        vector<int>color(v,-1);
-        for(int i=0;i<v;i++){
-            if(color[i]==-1){
-                        if(dfs(i,0,color,graph)==false){
-                        return false;
-                    }
+    
+    bool bfs(int start, vector<vector<int>>& graph, vector<int>& colors) {
+        queue<int> q;
+        colors[start] = 0;  // Start coloring with 0
+        q.push(start);
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+            for (int adjNode : graph[node]) {
+                if (colors[adjNode] == -1) {  // If not colored
+                    colors[adjNode] = (colors[node] == 1) ? 0 : 1;  // Alternate the color
+                    q.push(adjNode);
+                } else if (colors[adjNode] == colors[node]) {  // Same color as the current node
+                    return false;
+                }
             }
         }
         return true;
