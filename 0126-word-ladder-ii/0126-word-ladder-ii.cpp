@@ -1,48 +1,62 @@
 class Solution {
 public:
-    unordered_map<string, vector<string>> adj;
-    void dfs(string node, vector<vector<string>> &ans, vector<string> &curr, string beginWord){
-        if(node == beginWord){
-            ans.push_back(curr);
+      vector<vector<string>> ans;
+      unordered_map<string, int> mp;
+       string b;
+    void dfs(string word, vector<string> &seq ){
+        if(word==b){
+            reverse(seq.begin(), seq.end());
+            ans.push_back(seq);
+            reverse(seq.begin(), seq.end());
             return;
         }
-        for(string &nbr : adj[node]){
-            curr.push_back(nbr);
-            dfs(nbr, ans, curr, beginWord);
-            curr.pop_back();
+        int n= word.size();
+        int steps= mp[word];
+        for(int i=0; i<n; i++){
+              char original= word[i];
+              for(char ch='a'; ch<='z'; ch++){
+                  word[i]= ch;
+                 if(mp.find(word)!=mp.end() && mp[word]+1 ==steps){
+                    seq.push_back(word);
+                    dfs(word,seq);
+                    seq.pop_back();
+                 }
+              }
+              word[i]= original;
         }
     }
-    vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList){
-        vector<vector<string>> ans;
-        unordered_map<string, int> list;
-        for(string &word : wordList) list[word] = INT_MAX;
-        if(list.find(endWord) == list.end()) return ans;
-        queue<string> q;
-        q.push(beginWord);
-        int level = 0;
-        while(!q.empty()){
-            int n = q.size();
-            ++level;
-            for(int i=0; i<n; ++i){
-                string front = q.front();
-                q.pop();
-                for(int j=0; j<front.size(); ++j)                {
-                    string newWord = front;
-                    for(char letter='a'; letter<='z'; ++letter){
-                        newWord[j] = letter;
-                        if(newWord != front && list.find(newWord) != list.end() && list[newWord] >= level){
-                            adj[newWord].push_back(front);
-                            if(list[newWord] == level) continue;
-                            list[newWord] = level;
-                            if(newWord != endWord) q.push(newWord);
-                        }
-                    }
-                }
-            }
-        }
-        vector<string> curr({endWord});
-        dfs(endWord, ans, curr, beginWord);
-        for(int i=0; i<ans.size(); ++i) reverse(ans[i].begin(), ans[i].end());
-        return ans;
+    vector<vector<string>> findLadders 
+    (string beginWord, string endWord, vector<string>& wordList) {
+      unordered_set<string> st(wordList.begin(), wordList.end());
+      queue<string> q;
+      q.push({beginWord});
+      st.erase(beginWord);
+      mp[beginWord]=1;
+      b= beginWord;
+      int sizee = beginWord.size();
+      while(!q.empty()){
+          string word= q.front();
+          int steps= mp[word];
+          q.pop();
+          if(word==endWord) break;
+          for(int i=0; i<sizee; i++){
+              char original= word[i];
+              for(char ch='a'; ch<='z'; ch++){
+                  word[i]= ch;
+                  if(st.count(word)>0){
+                      q.push({word});
+                      st.erase(word);
+                      mp[word]=steps+1;
+                  }
+              }
+              word[i]= original;
+          }
+      }
+      if(mp.find(endWord)!=mp.end()){
+          vector<string> seq;
+          seq.push_back(endWord);
+          dfs(endWord,  seq);
+      }  
+      return ans;
     }
 };
