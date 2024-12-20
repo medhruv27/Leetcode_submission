@@ -5,7 +5,6 @@ public:
         queue<pair<int,pair<int,int>>>q;
         if(grid[0][0]==1) return -1;
         if(n==1 && grid[0][0]==0) return 1;
-        // if(n==0) return 0;
         q.push({1,{0,0}});
         vector<vector<int>>dis(n,vector<int>(n,1e9));
         while(!q.empty()){
@@ -21,9 +20,7 @@ public:
                     int cn = c + dcol;
                     if(rn>=0 && rn<n && cn>=0 && cn<n && grid[rn][cn]==0 && d + 1 < dis[rn][cn]){
                         dis[rn][cn] = 1 + d;
-                        if(rn == n-1 && cn ==n-1){
-                            return d + 1;
-                        }
+                        if(rn == n-1 && cn ==n-1) return dis[n-1][n-1];
                         q.push({d+1,{rn,cn}});
                     }
                 }
