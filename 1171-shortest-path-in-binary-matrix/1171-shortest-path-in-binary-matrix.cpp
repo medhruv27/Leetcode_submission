@@ -5,7 +5,7 @@ public:
         queue<pair<int,pair<int,int>>>q;
         if(grid[0][0]==1) return -1;
         if(n==1 && grid[0][0]==0) return 1;
-        if(n==0) return 0;
+        // if(n==0) return 0;
         q.push({1,{0,0}});
         vector<vector<int>>dis(n,vector<int>(n,1e9));
         while(!q.empty()){
