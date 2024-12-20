@@ -1,29 +1,34 @@
 class Solution {
 public:
-    bool ispalindrome(int i,int j,string &s){
-        while(i<j){
-            if(s[i]!=s[j]){
-                return false;
-            }
-            i++; j--;
+bool isPalin(string &str,int i,int j){
+    int s = i;
+    int e = j;
+    while(s<=e){
+        if(str[s] != str[e]){
+           return false;
         }
-        return true;
+        s++;
+        e--;
     }
-    int f(int i,int n,string& s,vector<int>&dp){
-        if(i==n) return 0; 
-        if(dp[i]!=-1) return dp[i];
-        int mincost = INT_MAX;
-        for(int j=i;j<n;j++){
-            if(ispalindrome(i,j,s)){
-                  int ans = 1 + f(j+1,n,s,dp);
-                  mincost = min(mincost,ans);
-            }
+    return true;
+}
+int solve(string &s,int i,int j,vector<vector<int>> &dp){
+    if(i>=j) return 0;
+    if(isPalin(s,i,j) == true) return 0;
+    if(dp[i][j]!=-1) return dp[i][j];
+    int mn = INT_MAX;
+    for(int k = i;k<j;k++){
+        if(isPalin(s,i,k) == true) {
+        int temp =  solve(s,k+1,j,dp) + 1;
+        
+        mn = min(mn,temp);
         }
-        return dp[i] = mincost;
     }
+    return dp[i][j] = mn;
+}
+
     int minCut(string s) {
-        int n = s.length();
-        vector<int>dp(n,-1);
-        return f(0,n,s,dp)-1;
+        vector<vector<int>> dp(2001,vector<int>(2001,-1));
+        return solve(s,0,s.size()-1,dp);
     }
 };
