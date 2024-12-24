@@ -3,8 +3,8 @@ public:
     bool checkInclusion(string s1, string s2) {
       unordered_map<char,int>mp;
       int k = s1.size();
-      for(int i=0;i<k;i++){
-        mp[s1[i]]++;
+      for(auto it: s1){
+        mp[it]++;
       }        
       int s=0,e=0,cnt=0;
       int count = mp.size();
