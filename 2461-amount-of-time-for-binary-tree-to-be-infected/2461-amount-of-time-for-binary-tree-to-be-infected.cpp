@@ -11,63 +11,39 @@
  */
 class Solution {
 public:
-    TreeNode* bfstomap(TreeNode* root,map<TreeNode*,TreeNode*>&mpp,int start){
-        queue<TreeNode*>q;
-        TreeNode* res ;
-        q.push(root);
-        while(!q.empty()){
-            TreeNode* node = q.front();
-            q.pop();
-            if(node->val==start) res = node;
-            if(node->left){
-                mpp[node->left] = node;
-                q.push(node->left);
+    unordered_map<int,vector<int>> v;
+    void createGraph(TreeNode* root){
+        queue<pair<TreeNode*,int>> q;
+        q.push({root,-1});
+        while(q.size()){
+            auto [node,parent]= q.front(); q.pop();
+            if(parent!=-1){
+                v[parent].push_back(node->val);
+                v[node->val].push_back(parent);
             }
-            if(node->right){
-                mpp[node->right] = node;
-                q.push(node->right);
-            }
-        }
-        return res;
-    }
-    int solve(TreeNode* target,map<TreeNode*,TreeNode*>&mpp){
-        queue<TreeNode*>q;
-        q.push(target);
-        map<TreeNode*,int>vis;
-        vis[target] =1;
-        int maxi =0;
-        while(!q.empty()){
-            int siz = q.size();
-            int fl =0;
-            for(int i=0;i<siz;i++){
-                auto node = q.front();
-                q.pop();
-                if(node->left && !vis[node->left]){
-                    fl=1;
-                    vis[node->left]=1;
-                    q.push(node->left);
-                }
-                if(node->right && !vis[node->right]){
-                    fl=1;
-                    vis[node->right]=1;
-                    q.push(node->right);
-
-                }
-                if(mpp[node] && !vis[mpp[node]]){
-                    fl=1;
-                    vis[mpp[node]]=1;
-                    q.push(mpp[node]);
-                }
-            }
-            if(fl){
-                maxi++;
-            }
-        }
-        return maxi;
+            if(node->left)  q.push({node->left,node->val});
+            if(node->right) q.push({node->right,node->val});
+        }   
     }
     int amountOfTime(TreeNode* root, int start) {
-        map<TreeNode*,TreeNode*>mpp;
-        TreeNode* target = bfstomap(root,mpp,start);
-        return solve(target,mpp);
+        createGraph(root);
+        queue<int> q;
+        unordered_map<int,bool> seen;
+        q.push(start);
+        seen[start]=true;
+        int time=0;
+        for(;q.size();time++){
+            int n= q.size();
+            while(n--){
+                auto node= q.front();  q.pop();
+                for(auto i:v[node]){
+                    if(!seen[i]){
+                        q.push(i);
+                        seen[i]=true;
+                    }
+                }
+            }
+        }
+        return time-1;
     }
 };
