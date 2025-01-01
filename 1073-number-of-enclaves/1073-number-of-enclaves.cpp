@@ -1,50 +1,45 @@
 class Solution {
 public:
-
-    void dfs(int r ,int c,vector<vector<int>>&vis,vector<vector<int>>&grid){
-        int drow[] ={-1,0,1,0};
-        int dcol[] ={0,1,0,-1};  
-        int n = grid.size();
-        int m = grid[0].size();         
-        vis[r][c] = 1;
-        for(int i=0;i<4;i++){
-            int rn = r+ drow[i];
-            int cn = c+ dcol[i];
-            if(rn>=0 && rn<n && cn>=0 && cn<m && !vis[rn][cn] && grid[rn][cn] == 1){
-                grid[rn][cn] = 0;
-                dfs(rn,cn,vis,grid);
+    void dfs(vector<vector<int>>&vis,vector<vector<int>>&grid,int i,int j,int n,int m){
+        int drow[] ={0,1,0,-1};
+        int dcol[] ={1,0,-1,0};
+        vis[i][j]=1;
+        for(int k=0;k<4;k++){
+            int rn = i + drow[k];
+            int cn = j + dcol[k];
+            if(rn>=0 && rn<n && cn>=0 && cn<m && vis[rn][cn]==0 && grid[rn][cn]==1){
+                dfs(vis,grid,rn,cn,n,m);
             }
         }
-
     }
     int numEnclaves(vector<vector<int>>& grid) {
-        int n= grid.size();
+        int n = grid.size();
         int m = grid[0].size();
         vector<vector<int>>vis(n,vector<int>(m,0));
         for(int i=0;i<n;i++){
-            if(!vis[i][0] && grid[i][0]==1){
-                dfs(i,0,vis,grid);
+            if(grid[i][0]==1){
+                dfs(vis,grid,i,0,n,m);
             }
-            if(!vis[i][m-1] && grid[i][m-1]==1){
-                dfs(i,m-1,vis,grid);
+            if(grid[i][m-1]==1){
+                dfs(vis,grid,i,m-1,n,m);
             }
         }
         for(int j=0;j<m;j++){
-            if(!vis[0][j] && grid[0][j]==1){
-                dfs(0,j,vis,grid);
+            if(grid[0][j]==1 ){
+                dfs(vis,grid,0,j,n,m);
             }
-            if(!vis[n-1][j] && grid[n-1][j]==1){
-                dfs(n-1,j,vis,grid);
+            if(grid[n-1][j]==1){
+                 dfs(vis,grid,n-1,j,n,m);
             }
         }
-        int c=0;
+        int cnt=0;
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
-                if(!vis[i][j] && grid[i][j]==1){
-                    c++;
+                if(vis[i][j]!=grid[i][j]){
+                    cnt++;
                 }
             }
         }
-        return c;
+        return cnt;
     }
 };
