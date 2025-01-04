@@ -5,17 +5,14 @@ public:
         if(k<=1) return 0;
         while(r<n){
             ans*= nums[r];
-            if(ans<k){
-                cnt+= r-l+1;
-                r++;
-            }else{
+            if(ans>=k){
                 while(ans>=k){
                     ans/=nums[l];
                     l++;
                 }
-                cnt+= r-l+1;
-                r++;
             }
+            cnt+= r-l+1;
+            r++;
         }
         return cnt;
     }
