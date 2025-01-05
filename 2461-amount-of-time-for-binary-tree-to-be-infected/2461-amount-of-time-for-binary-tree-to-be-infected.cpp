@@ -11,39 +11,48 @@
  */
 class Solution {
 public:
-    unordered_map<int,vector<int>> v;
-    void createGraph(TreeNode* root){
-        queue<pair<TreeNode*,int>> q;
-        q.push({root,-1});
-        while(q.size()){
-            auto [node,parent]= q.front(); q.pop();
-            if(parent!=-1){
-                v[parent].push_back(node->val);
-                v[node->val].push_back(parent);
-            }
-            if(node->left)  q.push({node->left,node->val});
-            if(node->right) q.push({node->right,node->val});
-        }   
+    void bfstomap(unordered_map<TreeNode*,TreeNode*>&mp,int start,TreeNode* node,TreeNode* &s){
+        if(node==NULL) return ;
+        if(node->val==start){
+            s = node;
+        }
+        if(node->left){
+            mp[node->left]= node;
+            bfstomap(mp,start,node->left,s);
+        }
+        if(node->right){
+            mp[node->right] = node;
+            bfstomap(mp,start,node->right,s);
+        }
     }
     int amountOfTime(TreeNode* root, int start) {
-        createGraph(root);
-        queue<int> q;
-        unordered_map<int,bool> seen;
-        q.push(start);
-        seen[start]=true;
-        int time=0;
-        for(;q.size();time++){
-            int n= q.size();
-            while(n--){
-                auto node= q.front();  q.pop();
-                for(auto i:v[node]){
-                    if(!seen[i]){
-                        q.push(i);
-                        seen[i]=true;
-                    }
-                }
+      unordered_map<TreeNode*, TreeNode*> parentMap;
+        TreeNode* startNode = nullptr;
+        bfstomap(parentMap, start, root, startNode);
+        int maxTime = 0;
+        unordered_set<TreeNode*> visited;  // To avoid reprocessing nodes
+        queue<pair<TreeNode*, int>> q;
+        q.push({startNode, 0});
+        visited.insert(startNode);
+        while (!q.empty()) {
+            auto [node, currentTime] = q.front();
+            q.pop();
+            maxTime = max(maxTime, currentTime);
+
+            // Explore children and parent
+            if (node->left && visited.find(node->left) == visited.end()) {
+                q.push({node->left, currentTime + 1});
+                visited.insert(node->left);
+            }
+            if (node->right && visited.find(node->right) == visited.end()) {
+                q.push({node->right, currentTime + 1});
+                visited.insert(node->right);
+            }
+            if (parentMap.find(node) != parentMap.end() && visited.find(parentMap[node]) == visited.end()) {
+                q.push({parentMap[node], currentTime + 1});
+                visited.insert(parentMap[node]);
             }
         }
-        return time-1;
+        return maxTime;
     }
 };
