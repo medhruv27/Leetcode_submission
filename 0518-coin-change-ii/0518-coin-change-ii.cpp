@@ -1,10 +1,11 @@
 class Solution {
 public:
     int solve(int i,int j,vector<vector<int>>&dp,vector<int>&coins){
+        if(i==0) return 0;
         if(j==0 ){
             return 1;
         }
-        if(i==0) return 0;
+        
         if(dp[i][j]!=-1)return dp[i][j];
         if(coins[i-1]<=j){
             dp[i][j] = (solve(i,j-coins[i-1],dp,coins)+solve(i-1,j,dp,coins));
