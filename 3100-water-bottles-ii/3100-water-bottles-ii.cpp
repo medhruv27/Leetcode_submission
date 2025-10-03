@@ -3,11 +3,9 @@ public:
     int maxBottlesDrunk(int b, int e) {
         int ans=b,r=0;
         while(true){
-            // int r = 1;
-            int b2 = b-e;
-            if(b2>=0){
+            if(b-e>=0){
                 r++;
-                b =b2;
+                b =b-e;
                 e++;
             }
             else{
