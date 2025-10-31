@@ -8,19 +8,18 @@ public:
                 if(t[s]<=p){
                     p-=t[s];
                     c++;
-                    cout<<c<<"->"<<p<<endl;
+                    cout<<c<<"faceup"<<p<<endl;
                 }
                 s++;
             }else if(p<t[s] && c>=1){
                 p += t[e];
                 c--;
                 e--;
-                cout<<c<<"-"<<p<<endl;
+                cout<<c<<"facedown"<<p<<endl;
             }
         }
         if(s==e){
             if(t[s]<=p)c++;
-            // else c--;
         }
         return c;
     }
