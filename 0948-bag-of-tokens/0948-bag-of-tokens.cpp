@@ -5,21 +5,22 @@ public:
         int s=0,e=t.size()-1,c=0;
         while(s<e){
             if(c==0 || t[s]<=p){ //faceup
-                if(t[s]<p){
+                if(t[s]<=p){
                     p-=t[s];
                     c++;
-                    cout<<c<<p;
+                    cout<<c<<"->"<<p<<endl;
                 }
                 s++;
             }else if(p<t[s] && c>=1){
                 p += t[e];
                 c--;
                 e--;
-                cout<<c;
+                cout<<c<<"-"<<p<<endl;
             }
         }
         if(s==e){
             if(t[s]<=p)c++;
+            // else c--;
         }
         return c;
     }
