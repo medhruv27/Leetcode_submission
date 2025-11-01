@@ -11,26 +11,20 @@
 class Solution {
 public:
     ListNode* modifiedList(vector<int>& nums, ListNode* head) {
-        map<int,int>mp;
-        for(auto it: nums){
-            mp[it]++;
+        unordered_set<int>todel;
+        for(auto num : nums){
+            todel.insert(num);
         }
-        ListNode* dummy  = new ListNode(0);
-        ListNode* curr = head;
-        ListNode* curr1 = dummy;
+        ListNode* dummy = new ListNode(0);
+        ListNode* prev = dummy ,*curr = head;
         while(curr!=NULL){
-            if(mp.find(curr->val)==mp.end()){
-                curr1->next = curr;
-                curr= curr->next;
-                curr1  = curr1->next;
-            }else{
-                curr = curr->next;
-                continue;
-
+            if(todel.count(curr->val)==0){//dont delete kar
+                prev->next = curr;
+                prev = prev ->next;
             }
+            curr = curr->next;
         }
-        curr1->next  = NULL;
+        prev->next = NULL;
         return dummy->next;
-
     }
 };
