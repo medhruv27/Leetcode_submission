@@ -32,10 +32,12 @@ public:
             for(int j=1;j<=w;j++){
                 int take =0;
                 if(t1[i-1]==t2[j-1]){
-                    take = 1 + dp[i-1][j-1];
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                }else{
+                    dp[i][j] = max(dp[i-1][j],dp[i][j-1]);
                 }
-                int notake = max(dp[i-1][j],dp[i][j-1]);
-                dp[i][j] = max(take,notake);
+                // int notake = max(dp[i-1][j],dp[i][j-1]);
+                // dp[i][j] = max(take,notake);
             }
         }
         return dp[n][w];
