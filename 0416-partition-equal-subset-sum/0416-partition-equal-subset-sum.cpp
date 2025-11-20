@@ -1,16 +1,9 @@
 class Solution {
 public:
     bool Subsetsum(vector<int>&nums , int k ,int n){
-        vector<vector<int>>dp(n+1,vector<int>(k+1));
+        vector<vector<int>>dp(n+1,vector<int>(k+1,0));
         for(int i =0;i<=n;i++){
-            for(int j=0;j<=k;j++){
-                if(i==0){
-                    dp[i][j]=0;
-                }
-                if(j==0){
-                    dp[i][j]=1;
-                }
-            }
+             dp[i][0]=1;
         }
         for(int i=1;i<=n;i++){
             for(int j=1;j<=k;j++){
@@ -35,7 +28,5 @@ public:
         }
          else
         return Subsetsum(nums,sum/2 ,n);
-        
-
     }
 };
