@@ -11,48 +11,66 @@
  */
 class Solution {
 public:
-    void bfstomap(unordered_map<TreeNode*,TreeNode*>&mp,int start,TreeNode* node,TreeNode* &s){
-        if(node==NULL) return ;
-        if(node->val==start){
-            s = node;
+    TreeNode* parent(TreeNode* root,map<TreeNode*,TreeNode*>&mp,int start){
+        queue<TreeNode*>q;
+        q.push(root);
+        TreeNode* res;
+        while(!q.empty()){
+            TreeNode* node = q.front();
+            q.pop();
+            if(node->val == start){
+                res = node;
+            }
+            if(node->left){
+                q.push(node->left);
+                mp[node->left]= node;
+            }
+            if(node->right){
+                q.push(node->right);
+                mp[node->right]= node;
+            }
         }
-        if(node->left){
-            mp[node->left]= node;
-            bfstomap(mp,start,node->left,s);
+        return res;
+    }
+    int solve(map<TreeNode*,TreeNode*>&mp,TreeNode* s){
+        if (!s) return 0;
+        int maxi =0;
+        queue<TreeNode*>q;
+        map<TreeNode*,bool>vis;
+        vis[s] = true;
+        q.push(s);
+        while(!q.empty()){
+
+            int f = 0;
+            int n = q.size();
+            for(int i=0;i<n;i++){
+                auto node = q.front();
+                q.pop();
+                 if (node->left != nullptr && vis.find(node->left) == vis.end()) {
+                f = 1;
+                vis[node->left] = true;
+                q.push(node->left);
+                }
+                if (node->right != nullptr && vis.find(node->right) == vis.end()) {
+                    f = 1;
+                    vis[node->right] = true;
+                    q.push(node->right);
+                }            
+                if (mp.count(node) && vis.find(mp[node]) == vis.end()) {
+                    f = 1;
+                    vis[mp[node]] = true;
+                    q.push(mp[node]);
+                }
+            }
+            if(f==1){
+                maxi++;
+            }
         }
-        if(node->right){
-            mp[node->right] = node;
-            bfstomap(mp,start,node->right,s);
-        }
+        return maxi;
     }
     int amountOfTime(TreeNode* root, int start) {
-      unordered_map<TreeNode*, TreeNode*> parentMap;
-        TreeNode* startNode = nullptr;
-        bfstomap(parentMap, start, root, startNode);
-        int maxTime = 0;
-        unordered_set<TreeNode*> visited;  // To avoid reprocessing nodes
-        queue<pair<TreeNode*, int>> q;
-        q.push({startNode, 0});
-        visited.insert(startNode);
-        while (!q.empty()) {
-            auto [node, currentTime] = q.front();
-            q.pop();
-            maxTime = max(maxTime, currentTime);
-
-            // Explore children and parent
-            if (node->left && visited.find(node->left) == visited.end()) {
-                q.push({node->left, currentTime + 1});
-                visited.insert(node->left);
-            }
-            if (node->right && visited.find(node->right) == visited.end()) {
-                q.push({node->right, currentTime + 1});
-                visited.insert(node->right);
-            }
-            if (parentMap.find(node) != parentMap.end() && visited.find(parentMap[node]) == visited.end()) {
-                q.push({parentMap[node], currentTime + 1});
-                visited.insert(parentMap[node]);
-            }
-        }
-        return maxTime;
+        map<TreeNode*,TreeNode*>mp;
+        TreeNode* s = parent(root,mp,start);
+        return solve(mp,s);
     }
 };
