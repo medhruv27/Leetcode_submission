@@ -3,22 +3,20 @@ public:
     vector<int> largestDivisibleSubset(vector<int>& arr) {
         sort(arr.begin(),arr.end());
         int n = arr.size();
-        vector<int> dp(n,1);
-        vector<int> hash(n,1);
-        for(int index=0;index<=n-1;index++){
-             hash[index] =index;
-            for(int prev=0;prev<=index-1;prev++){
-                if(arr[index]%arr[prev]==0 && 1+dp[prev] >dp[index]){
-                    dp[index] = 1 + dp[prev];
-                    hash[index] = prev;
+        vector<int>dp(n,1);
+        vector<int>hash(n,1);
+        int maxi = INT_MIN;
+        int last = -1;
+        for(int i=0;i<n;i++){
+            hash[i] =i;
+            for(int prev = 0;prev<i;prev++){
+                if(arr[i]%arr[prev]==0 && 1 + dp[prev] > dp[i]){
+                    dp[i] = 1 + dp[prev];
+                    hash[i] = prev;
                 }
             }
-        }
-        int ans= -1;
-        int last =-1;
-        for(int i=0;i<n;i++) {
-            if(dp[i]>ans){
-                ans = dp[i];
+            if(dp[i]>maxi){
+                maxi = dp[i];
                 last = i;
             }
         }
