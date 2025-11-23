@@ -19,7 +19,15 @@ void dfs(int node,vector<int>&vis,vector<int> adj[]){
                 } 
             }
         }
-        vector<int>vis(v+1,0);
+        for(int i = 0; i < v; i++) {
+        cout << "Adjacency list of vertex " << i << ": ";
+        for(int j = 0; j < adj[i].size(); j++) {
+            cout << adj[i][j];
+            if(j < adj[i].size() - 1) cout << " -> ";
+        }
+        cout << endl;
+        }
+        vector<int>vis(v,0);
         int cnt =0;
         for(int i=0;i<v;i++){
             if(!vis[i]){
