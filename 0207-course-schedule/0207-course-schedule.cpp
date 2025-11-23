@@ -1,28 +1,29 @@
 class Solution {
 public:
-    bool canFinish(int v, vector<vector<int>>& pre) {
+    bool canFinish(int v, vector<vector<int>>& e) {
+
         vector<int>adj[v];
-        for(auto it : pre){
-            adj[it[0]].push_back(it[1]);
+        for(int i=0;i<e.size();i++){
+            int f = e[i][0];
+            int s = e[i][1];
+            adj[f].push_back(s);
         }
-        vector<int>topo;
         vector<int>indeg(v,0);
+        queue<int>q;
         for(int i=0;i<v;i++){
             for(auto it : adj[i]){
                 indeg[it]++;
             }
         }
-        queue<int>q;
         for(int i=0;i<v;i++){
             if(indeg[i]==0){
                 q.push(i);
             }
         }
-        int c=0;
+        int c =0;
         while(!q.empty()){
             int node = q.front();
             q.pop();
-            // topo.push_back(node);
             c++;
             for(auto it : adj[node]){
                 indeg[it]--;
@@ -31,9 +32,7 @@ public:
                 }
             }
         }
-        if(c==v){
-            return true;
-        }
-        return false;
+        return c==v;
+
     }
 };
