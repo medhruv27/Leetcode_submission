@@ -2,24 +2,24 @@ class Solution {
 public:
     bool solve(vector<int> &arr, int m,int k,int mid){
          int window = 0;
+         int c =0;
         for(int i = 0; i< arr.size(); i++){
             if(arr[i] <= mid) {
                 window++;
-                if(window == k) {
-                    m--;
-                    window = 0; // Reset window after forming a bouquet
-                }
             }
             else {
                 window = 0; // Break in adjacency
             }
-
-            if(m == 0){
-                return true;
+            if(window == k) {
+                c++;
+                window = 0; // Reset window after forming a bouquet
+            }
+            if(c==m){
+                return 1;
             }
         }
 
-        return false;
+        return 0;
     }
     int minDays(vector<int>& arr, int m, int k) {
         int n = arr.size();
