@@ -7,9 +7,9 @@ public:
                 c++;
             }else{
                 int r = ceil((double)arr[i]/mid);
-                c+=r;
-                if(c>k) return false;
+                c+=r;  
             }
+            if(c>k) return false;
         }
         return true;
     }
@@ -21,7 +21,7 @@ public:
         int res =-1;
         while(s<=e){
             int mid = s + (e-s)/2;
-            // cout<<mid;
+            cout<<mid;
             if(solve(arr,h,mid)){
                 res = mid;
                 e = mid-1;
