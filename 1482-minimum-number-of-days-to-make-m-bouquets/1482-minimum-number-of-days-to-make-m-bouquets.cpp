@@ -1,37 +1,45 @@
-class Solution {
+class Solution { 
 public:
-    int possibility(vector<int>&bloomDay,int day,int m,int k){
-       int cnt =0;
-       int n = bloomDay.size();
-       int bloomedflwrs = 0;
-        for (int i = 0; i < n; i++) {
-            if (bloomDay[i] <= day) {
-                cnt++;
+    bool solve(vector<int> &arr, int m,int k,int mid){
+         int window = 0;
+        for(int i = 0; i< arr.size(); i++){
+            if(arr[i] <= mid) {
+                window++;
+                if(window == k) {
+                    m--;
+                    window = 0; // Reset window after forming a bouquet
+                }
             }
             else {
-                bloomedflwrs += (cnt / k);
-                cnt = 0;
+                window = 0; // Break in adjacency
+            }
+
+            if(m == 0){
+                return true;
             }
         }
-        bloomedflwrs += (cnt / k);
-        return bloomedflwrs >= m;
+
+        return false;
     }
-    int minDays(vector<int>& bloomDay, int m, int k) {
-        long long val = m * 1ll * k * 1ll;
-        int n = bloomDay.size();
-        if(val>n)return -1;
-        int e = *max_element(bloomDay.begin(),bloomDay.end());
-        int s= *min_element(bloomDay.begin(),bloomDay.end());
-        int mid;
+    int minDays(vector<int>& arr, int m, int k) {
+        int n = arr.size();
+        long long pro = 1LL * m * k;
+        if(n < pro){ // as u need to create m bouquet but also need k adjacent flowers
+            return -1;
+        }
+        int s = *min_element(arr.begin(),arr.end());
+        int e = *max_element(arr.begin(),arr.end());
+        int res =e;
         while(s<=e){
-            mid  = (e-s)/2 + s;
-            if(possibility(bloomDay,mid,m,k)==true){
+            int mid = s + (e-s)/2;
+            cout<<mid<<" ";
+            if(solve(arr,m,k,mid)){
+                res = mid;
                 e = mid-1;
-            }
-            else{
-                s = mid+1;
+            }else{
+                s = mid +1;
             }
         }
-        return s;
+        return res;
     }
 };
