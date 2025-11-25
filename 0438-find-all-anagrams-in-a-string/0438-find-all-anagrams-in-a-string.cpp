@@ -1,40 +1,37 @@
 class Solution {
 public:
-    vector<int> findAnagrams(string s2, string s1) {
-      unordered_map<char,int>mp;
-      vector<int>ans;
-      int k = s1.size();
-      for(int i=0;i<k;i++){
-        mp[s1[i]]++;
-      }        
-      int s=0,e=0,cnt=0;
-      int count = mp.size();
-      while(e<s2.size()){
-        int curr = s2[e];
-        int prev = s2[s];
-        if(mp.find(curr)!=mp.end()){
-            mp[s2[e]]--;
-            if(mp[curr]==0){
-                count--;
-            }
+    vector<int> findAnagrams(string txt, string pat) {
+        map<char,int>mp;
+        for(int i=0;i<pat.size();i++){
+            mp[pat[i]]++;
         }
-        int windowsize = e-s+1;
-        if(windowsize<k){
-            e++;
-        }
-        else if(windowsize==k){
-            if(count==0){
-                ans.push_back(s);
-            }
-            if(mp.find(prev)!=mp.end()){
-                mp[prev]++;
-                if(mp[prev]==1){
-                    count++;
+        int s=0,e=0,n=pat.size(),count = mp.size();
+        vector<int>ans;
+        while(e<txt.size()){
+            char end = txt[e];
+            char front = txt[s];
+            if(mp.find(end)!=mp.end()){
+                mp[end]--;
+                if(mp[end]==0){
+                    count--;
                 }
             }
-            s++;e++;
+            int ws = e-s+1;
+            if(ws<n){
+                e++;
+            }else if(ws==n){
+                if(count ==0){
+                    ans.push_back(s);
+                }
+                if(mp.find(front)!=mp.end()){
+                    mp[front]++;
+                    if(mp[front]==1){
+                        count++;
+                    }
+                }
+                s++;e++;
+            }
         }
-      }
-      return ans;;
+        return ans;
     }
 };
