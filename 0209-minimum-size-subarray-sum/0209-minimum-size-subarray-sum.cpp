@@ -10,7 +10,6 @@ public:
             sum += a[j];
             if(sum < k) j++;
             else{
-                ans = min(ans,j-i+1);
                 while(sum >= k){
                     ans = min(ans,j-i+1);
                     sum-=a[i];
