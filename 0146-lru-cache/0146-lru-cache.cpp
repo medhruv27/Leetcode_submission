@@ -37,7 +37,8 @@ public:
             mp.erase(key);
             delnode(callednode);
             addnode(callednode);
-            mp[key]= head->next;
+            // mp[key]= head->next;
+            mp[key] = callednode;
             return val;
         }
         return -1;
