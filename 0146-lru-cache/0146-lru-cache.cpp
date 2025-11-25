@@ -7,40 +7,38 @@ public:
         node* next;
         node* prev;
     };
-    int cap;
-    map<int ,node*>mp;
     node* head = new node(-1,-1);
     node* tail = new node(-1,-1);
+    int cap ;
+    map<int,node*>mp;
     LRUCache(int capacity) {
         cap = capacity;
         head->next = tail;
-        tail->prev = head;
+        tail->next = head;
     }
-
-    void addnode(node* resnode){
+    void addnode(node* addn){
         node* temp = head->next;
-        resnode->next = temp;
-        resnode->prev = head;
-        head->next = resnode;
-        temp->prev = resnode;
+        addn->next = temp;
+        addn->prev = head;
+        head->next = addn;
+        temp->prev = addn;
     }
-
-    void delnode(node* resnode){
-        node* delnxt = resnode->next;
-        node* delprev = resnode->prev;
+    void delnode(node* deln){
+        node* delprev = deln->prev;
+        node* delnxt = deln->next;
         delprev->next = delnxt;
         delnxt->prev = delprev;
-    }
 
+    }
     int get(int key) {
         if(mp.find(key)!=mp.end()){
-            node* resnode = mp[key];
-            int res = resnode->val;
+            node * callednode = mp[key];
+            int val = callednode->val;
             mp.erase(key);
-            delnode(resnode);
-            addnode(resnode);
+            delnode(callednode);
+            addnode(callednode);
             mp[key]= head->next;
-            return res;
+            return val;
         }
         return -1;
     }
@@ -56,9 +54,8 @@ public:
             mp.erase(lru->key);
             delnode(lru);
         }
-        addnode(new node(key, value));
+        addnode(new node(key,value));
         mp[key] = head->next;
-
     }
 };
 
