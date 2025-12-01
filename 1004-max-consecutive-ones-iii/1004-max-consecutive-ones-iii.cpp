@@ -9,7 +9,7 @@ public:
             if(nums[e]==0){
                 k--;
             }
-            if(kk>0){
+            if(k>0){
                 maxi = max(maxi,e-s+1);
                 e++;
             }
