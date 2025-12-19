@@ -20,8 +20,8 @@ public:
             cnt++;
             return {root->val,1};
         }
-        pair<int,int> l= solve(root->left,sum + root->val,n);
-        pair<int,int> r= solve(root->right,sum + root->val,n);
+        pair<int,int> l= solve(root->left,sum ,n);
+        pair<int,int> r= solve(root->right,0,n);
         int avg = (root->val + l.first + r.first)/(1 + l.second + r.second);
         cout<<avg<<endl;
         if(root->val==avg){
