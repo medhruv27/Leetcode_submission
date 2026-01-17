@@ -13,27 +13,20 @@ class Solution {
 public:
     string solve(TreeNode* node, string& temp){
         if(node==NULL) return temp;
+        temp += to_string(node->val);
         if(node->left==NULL && node->right==NULL){
-            return temp +=  to_string(node->val);
+            return temp;
         }
-        
-        if(node->left == NULL && node->right!=NULL){
-            temp +=  to_string(node->val) + '(' + ')';
-            temp+= '(';
-            solve(node->right,temp);
-            temp+= ')';
-        }
-        else if(node->left != NULL && node->right==NULL){
-            temp +=  to_string(node->val);
-            temp+= '(';
+        if(node->left!=NULL){
+            temp += '(';
             solve(node->left,temp);
-            temp+= ')';
+            temp += ')';
         }
-        else{
-            temp += to_string(node->val);
-            temp+= '(';
-            solve(node->left,temp);
-            temp +=  ')' ;
+        if(node->left==NULL){
+             temp += '(';
+             temp += ')';
+        }
+        if(node->right!=nullptr){
             temp += '(';
             solve(node->right,temp);
             temp += ')';
@@ -41,7 +34,7 @@ public:
         return temp;
     }
     string tree2str(TreeNode* root) {
-        string temp= "";
+        string temp = "";
         solve(root,temp);
         return temp;
     }
