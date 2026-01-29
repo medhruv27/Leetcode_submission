@@ -1,24 +1,40 @@
 class Solution {
-public: 
-    string bothside(string &s,int left,int right){
-        while(left>=0 && right<s.length() && s[left]==s[right]){
-            left--;
-            right++;
+public:
+    int dp[1001][1001];
+    int maxi =0,indx=-1;
+    string solve(int n,int m,string &s,string &t){
+        for(int i=0;i<=n;i++){
+            dp[i][0] =0;
+            dp[0][i] =0;
         }
-        return s.substr(left + 1,right-left-1);
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                if(s[i-1]==t[j-1]){
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                    if (maxi < dp[i][j] && i - dp[i][j] == n - j) {
+                        maxi = dp[i][j];
+                        indx = i - 1;
+                    /* CHECK: Does this substring in S end where it started in T?
+                       Original index in S (end): i-1
+                       Reversed index in T (end): j-1
+                       The index j-1 in T corresponds to (n-1)-(j-1) in S.
+                       If (i-1) - dp[i][j] + 1 == (n-j), it is a valid palindrome.
+                    */
+                    }
+                }else{
+                    dp[i][j] =0;
+                }
+            }
+        }
+        cout<<maxi<<" "<<indx;
+        return s.substr(indx-maxi+1,maxi);
     }
     string longestPalindrome(string s) {
-        string ans;
-        for(int i=0;i<s.length();i++){
-            string oddpali = bothside(s,i,i);
-            string evenpali = bothside(s,i,i+1);
-            if(oddpali.length()>ans.length()){
-                ans = oddpali;
-            }
-            if(evenpali.length()>ans.length()){
-                ans = evenpali;
-            }
-        }
-        return ans;
+        string t = s ;
+        int n = s.length();
+        int m = n;
+        reverse(t.begin(),t.end());
+        memset(dp,-1,sizeof(dp));
+        return solve(n,m,s,t);
     }
 };
