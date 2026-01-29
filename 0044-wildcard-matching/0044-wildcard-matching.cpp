@@ -19,11 +19,9 @@ public:
             return dp[n][m] =  solve(n-1,m,s,p) || solve(n,m-1,s,p);
         }
         if((s[n-1]==p[m-1]) || p[m-1]=='?'){
-            return dp[n][m] = (solve(n-1,m-1,s,p))?1:0;
+            return dp[n][m] = (solve(n-1,m-1,s,p));
         }
-        else{
-            return false;
-        }
+        return false;
     }
     bool isMatch(string s, string p) {
         int n = s.length();
