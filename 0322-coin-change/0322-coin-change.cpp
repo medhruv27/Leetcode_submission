@@ -1,6 +1,5 @@
 class Solution {
 public:
-
     // int solve(int n,int w,vector<int>&nums){
     //     //base cond.
     //     if(n==0) return INT_MAX-1;
@@ -44,6 +43,7 @@ public:
 
     int solve(int n,int w,vector<int>&nums){
         vector<vector<int>>dp(n+1,vector<int>(w+1,0));
+
         for(int j=0;j<=w;j++){
             dp[0][j] = INT_MAX-1;
             if(j%nums[0]==0 && j!=0){
@@ -51,8 +51,9 @@ public:
             }else{
                 if(j!=0)
                 dp[1][j] = INT_MAX-1;
-            }
+            } 
         }
+        dp[0][0] = 0;
         for(int i=2;i<=n;i++){
             for(int j=0;j<=w;j++){
                 if(nums[i-1]<=j){
@@ -62,6 +63,7 @@ public:
                 }
             }
         }
+        cout<<dp[0][0];
         return dp[n][w];
     }
     //tabular
