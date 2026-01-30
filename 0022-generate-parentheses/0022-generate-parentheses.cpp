@@ -1,25 +1,18 @@
 class Solution {
 public:
-    vector<string>m;
-    void solve(int open ,int close,string op){
-        if(open ==0 && close==0){
-            m.push_back(op);
-            return;
+    vector<string>res;
+    void solve(int o,int e,int n,string ans){
+        if(o>n || e>n) return;
+        if(n==o && o==e){
+            res.push_back(ans);
+            return ;
         }
-        if(open !=0){
-            string op1 = op;
-            op1.push_back('(');
-            solve(open-1,close,op1);
-        }
-        if(open<close){
-            string op2 =op;
-            op2.push_back(')');
-            solve(open,close-1,op2);
-        }
+        solve(o + 1,e,n,ans + '(');
+        if(o>e)
+        solve(o,e + 1,n,ans + ')');
     }
     vector<string> generateParenthesis(int n) {
-        string op;
-        solve(n,n,op);
-        return m;
+        solve(0,0,n,"");
+        return res;
     }
 };
