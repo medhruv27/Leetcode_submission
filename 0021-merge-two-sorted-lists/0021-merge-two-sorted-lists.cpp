@@ -10,31 +10,28 @@
  */
 class Solution {
 public:
+    struct compare{
+        bool operator()(ListNode* a ,ListNode* b){
+             return a->val > b->val;
+        }
+    };
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        ListNode* h1 = list1;
-        ListNode* h2 = list2;
-        ListNode* dummy = new ListNode(-1);
-        ListNode* curr= dummy ;
-        while(curr!=NULL && h1!=NULL && h2!=NULL){
-            if(h1->val>h2->val){
-                curr->next = h2;
-                h2 = h2->next;
-                curr = curr->next;
-            }else{
-                curr->next= h1;
-                h1 = h1 ->next;
-                curr = curr->next;
+        priority_queue<ListNode*,vector<ListNode*>,compare>minh;
+        if (list1) {
+            minh.push(list1);
+        }
+        if (list2) {
+            minh.push(list2);
+        }
+        ListNode * dummy = new ListNode(0);
+        ListNode* curr = dummy;
+        while(!minh.empty()){
+            curr->next = minh.top();
+            minh.pop();
+            curr = curr->next;
+            if (curr->next) {
+            minh.push(curr->next);
             }
-        }
-        while(h1!=NULL){
-            curr->next= h1;
-            curr = curr->next;
-            h1=h1->next;
-        }
-        while(h2!=NULL){
-            curr->next= h2;
-            curr = curr->next;
-            h2=h2->next;
         }
         return dummy->next;
     }
