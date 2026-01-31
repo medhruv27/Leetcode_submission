@@ -3,11 +3,11 @@ class node{
     int data;
     int mini;
     node *next;
-    node(int data,int mini){
-        this->data = data;
-        this->mini = mini;
-        this->next = NULL;
-    }
+    // node(int data,int mini){
+    //     this->data = data;
+    //     this->mini = mini;
+    //     this->next = NULL;
+    // }
 };
 
 class MinStack {
