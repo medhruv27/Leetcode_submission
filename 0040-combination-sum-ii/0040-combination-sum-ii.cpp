@@ -11,9 +11,8 @@ public:
         
         op.push_back(nums[i]);
         solve(i+1, n, nums, target - nums[i], op);
-
         op.pop_back();
-        while(i+1<n && nums[i+1]==nums[i]) i++;
+        while(i+1<n && nums[i]==nums[i+1]) i++;
         solve(i + 1, n, nums, target, op);
     }
 
