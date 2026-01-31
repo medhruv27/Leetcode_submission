@@ -1,70 +1,43 @@
-class MinStack {
-public:
-    stack<long long> s;
-    long long min;
-    MinStack() {}
-    void push(int val) {
-        if (s.size() == 0) {
-            s.push(val);
-            min = val;
-
-        } else {
-            if (val >= min) {
-                s.push(val);
-            }
-            else // if (val<min)
-            {   // s.push(2*val-min);this line is causing integer overflow error
-                // so to remove it we have something special to remember for the
-                // lifetime lessons
-                long long temp = val;
-                temp = temp * 2;
-                s.push(temp - min);
-                min = val;
-            }
-        }
-    }
-
-    void pop() {           // pop ko samjhana is very  very important
-        if (s.size() == 0) // you cant do return -1 in void function
-        {
-            //  return -1;
-        } else {
-            if (s.top() >= min)
-                s.pop();
-
-            else // if(s.top()<min)
-            {
-
-                min = 2 * min - s.top();
-                s.pop();
-            }
-        }
-    }
-
-    int top() { // also top ko samjhana is very very important
-        if (s.size() == 0) {
-            return -1;
-
-        } else {
-
-            if (s.top() >= min)
-                return s.top();
-            else // if(s.top()<min)
-            {
-                return min;
-            }
-        }
-        return -1; // i added this myself to make the code pass becoz an int
-                   // function must return something
-    }
-
-    int getMin() {
-        if (s.size() == 0) {
-            return -1;
-        }
-        return min;
+class node{
+    public: 
+    int data;
+    int mini;
+    node *next;
+    node(int data,int mini){
+        this->data = data;
+        this->mini = mini;
+        this->next = NULL;
     }
 };
+
+class MinStack {
+public:
+    node *head = NULL;
+    MinStack() {}
+    void push(int val) {
+        if(head == NULL){
+            node *newNode = new node(val,val);
+            head = newNode;
+        }
+        else{
+            int mini = min(val,head->mini);
+            node *newNode = new node(val,mini);
+            newNode->next = head;
+            head = newNode;
+        }
+    }
+    
+    void pop() {
+        head = head -> next;
+    }
+    int top() {
+        return head -> data;
+    }
+    int getMin() {
+        return head -> mini;
+    }
+};
+
 
 /**
  * Your MinStack object will be instantiated and called as such:
