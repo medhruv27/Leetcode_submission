@@ -1,17 +1,17 @@
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
-         vector<bool> dp(s.size() + 1, false);
-         dp[0] = true;
-         for(int i=1;i<=s.length();i++){
-            for(auto it : wordDict){
-                int start = i - it.length();
-                if(start>=0 && dp[start] && s.substr(start, it.length()) == it){
-                    dp[i] = true;
-                    break;
-                }
+        unordered_set<string>word_set(wordDict.begin(),wordDict.end());
+        int n=s.size();
+        vector<bool>dp(n+1,0);
+        dp[0]=1;
+        for(int i=0;i<n;i++){
+            if(dp[i]==false)continue;
+            for(int j=i+1;j<=n;j++){
+                if( word_set.count(s.substr(i,j-i)))
+                dp[j]=1;
             }
         }
-        return dp[s.size()];
+        return dp[n];
     }
 };
