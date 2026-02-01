@@ -1,47 +1,35 @@
 class Solution {
 public:
-    // Removed the DP array because it causes false negatives in path-dependent DFS.
-    
     bool solve(int r, int c, int n, int m, vector<vector<char>>& g, string& word, int a) {
         if (a == word.size() - 1) return true;
-
         char curr = g[r][c];
-        g[r][c] = '!'; // Mark visited
-        
+        g[r][c] = '!'; 
         int drow[] = {-1, 0, 1, 0}, dcol[] = {0, 1, 0, -1};
-        
         for (int i = 0; i < 4; i++) {
             int nr = r + drow[i], nc = c + dcol[i];
             if (nr >= 0 && nr < n && nc >= 0 && nc < m && g[nr][nc] == word[a + 1]) {
                 if (solve(nr, nc, n, m, g, word, a + 1)) {
-                    g[r][c] = curr; // Backtrack
+                    g[r][c] = curr;
                     return true;
                 }
             }
         }
-        
-        g[r][c] = curr; // Backtrack
+        g[r][c] = curr; 
         return false;
     }
-
     vector<string> findWords(vector<vector<char>>& g, vector<string>& words) {
         int n = g.size(), m = g[0].size();
         vector<string> ans;
-        
-        // 1. Board Frequency Optimization (Crucial for TLE)
         vector<int> boardCount(26, 0);
         for(int i=0; i<n; i++) for(int j=0; j<m; j++) boardCount[g[i][j]-'a']++;
 
         for (string word : words) {
-            // 2. Frequency Pruning: If word has more of a letter than the board, skip.
-            vector<int> wordCount(26, 0);
-            bool possible = true;
-            for(char c : word) {
-                if(++wordCount[c-'a'] > boardCount[c-'a']) { possible = false; break; }
-            }
-            if(!possible) continue;
-
-            // 3. Reversal Heuristic: Start from the rarer end of the word
+            // vector<int> wordCount(26, 0);
+            // bool possible = true;
+            // for(char c : word) {
+            //     if(++wordCount[c-'a'] > boardCount[c-'a']) { possible = false; break; }
+            // }
+            // if(!possible) continue;
             bool rev = false;
             if(boardCount[word.front()-'a'] > boardCount[word.back()-'a']) {
                 reverse(word.begin(), word.end());
