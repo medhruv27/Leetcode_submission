@@ -1,20 +1,22 @@
 class Solution {
 public:
-    string solve(string &s,int& i){
+    string solve(string& s,int& i){
+        int n =0;
         string res ="";
-        int n = 0;
-        while(i<s.size()){
+        while(i<s.length()){
             char c = s[i];
             if(isdigit(c)){
                 n = n*10 + (c-'0');
+                cout<<n<<endl;
                 i++;
             }else if(c == '['){
                 i++;
                 string recstr = solve(s,i);
-                for(int x =0;x<n;x++){
+                cout<<recstr<<endl;
+                for(int x=0;x<n;x++){
                     res += recstr;
                 }
-                n = 0;
+                n=0;
             }else if(c == ']'){
                 i++;
                 return res;
