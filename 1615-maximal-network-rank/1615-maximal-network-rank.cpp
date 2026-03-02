@@ -18,8 +18,7 @@ public:
         int res=-1;
         for(int i=0;i<n-1;i++){
             for(int j=i+1;j<n;j++){
-                vector<int> check = {i,j};
-                if(mp.find(check)!=mp.end() || mp.find({j,i})!=mp.end()){
+                if(mp.find({i,j})!=mp.end() || mp.find({j,i})!=mp.end()){
                     res = max(res,indeg[i]+indeg[j]-1);
                 }else{
                     res = max(res,indeg[i]+indeg[j]);
